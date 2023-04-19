@@ -41,7 +41,6 @@ driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div/div[1]/div/ul/div[3
 driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div/div[1]/div/ul/div[3]/li/ul/div[1]/a/li").click()
 time.sleep(2)
 ip=driver.find_element(By.XPATH, '/html/body/div/div/div[2]/section/div/div/div[3]/table/tbody/tr[3]/td[3]/div').text
-driver.quit()
 
 php=open(Website_root+r'\config\config_ucenter.php',mode='w+')
 php.write("<?php\n\n\ndefine('UC_CONNECT', 'mysql');\n\ndefine('UC_DBHOST', '"+Mysql_ip+"');\ndefine('UC_DBUSER', '"+Mysql_user+"');\ndefine('UC_DBPW', '"+Mysql_pwd+"');\ndefine('UC_DBNAME', '"+Mysql_database_name+"');\ndefine('UC_DBCHARSET', 'utf8');\ndefine('UC_DBTABLEPRE', '`"+Mysql_database_name+"`.pre_ucenter_');\ndefine('UC_DBCONNECT', 0);\n\ndefine('UC_CHARSET', 'utf-8');\ndefine('UC_KEY', '"+UC_key+"');\ndefine('UC_API', '"+ip+"/uc_server');\ndefine('UC_APPID', '1');\ndefine('UC_IP', '');\ndefine('UC_PPP', 20);")
@@ -81,6 +80,9 @@ os.system("pull.bat")
 bat2=open('del.bat',mode='w+')
 bat2.write("@echo off&del push.bat\ndel pull.bat\ndel del.bat\nrmdir git /s /q\npause")
 bat2.close()
+os.remove(Website_root+r'\data\update.lock')
+driver.get(ip+"/install/update.php?step=cache")
+driver.quit()
 
 time.sleep(10)
 os.system("del.bat")
