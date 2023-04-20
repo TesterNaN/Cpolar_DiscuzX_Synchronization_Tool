@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
+from shutil import copyfile
 import requests
 import pymysql
 import urllib
@@ -80,8 +81,12 @@ os.system("pull.bat")
 bat2=open('del.bat',mode='w+')
 bat2.write("@echo off&del push.bat\ndel pull.bat\ndel del.bat\nrmdir git /s /q\npause")
 bat2.close()
-os.remove(Website_root+r'\data\update.lock')
-driver.get(ip+"/install/update.php?step=cache")
+try:
+    copyfile("update.php", Website_root+r"\data\update.php")
+    os.remove(Website_root+r'\data\update.lock')
+except:
+    pass
+driver.get(ip+"/data/update.php?step=cache")
 driver.quit()
 
 time.sleep(10)
